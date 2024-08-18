@@ -1,2 +1,64 @@
+:root {
+  --font-primary: "Karla", sans-serif;
+  --color-light: #f5f7fb;
+  --color-bg-btn: #4d5b9e;
+  --color-txt-primary: #293264;
+}
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
 
+body,
+button {
+  font-family: var(--font-primary);
+}
+
+.main {
+  background: var(--color-light);
+  height: 100vh;
+  position: relative;
+  display: grid;
+  place-content: center;
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.8em 1.8em;
+  transition: 0.2s all;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.btn--primary {
+  background: var(--color-bg-btn);
+  color: var(--color-light);
+}
+
+.blob {
+  position: absolute;
+  background-repeat: no-repeat;
+  height: 235px;
+  width: 297px;
+}
+
+.blob--right {
+  background-image: url("./assets/images/blob-right.svg");
+  background-position: top 0 right 0;
+  top: 0;
+  right: 0;
+}
+
+.blob--left {
+  background-image: url("./assets/images/blob-left.svg");
+  background-position: bottom 0 left 0;
+  bottom: 0;
+  left: 0;
+}

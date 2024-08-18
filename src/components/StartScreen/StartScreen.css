@@ -1,0 +1,19 @@
+.start-container {
+  text-align: center;
+  display: grid;
+  gap: 0.5em;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 0.2em;
+}
+
+.subheader {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.start-container > .btn {
+  margin-top: 1.8em;
+}
