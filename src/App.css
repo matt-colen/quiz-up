@@ -91,3 +91,10 @@ body {
     padding: 7vh 5%;
   }
 }
+
+@media (max-width: 400px) {
+  .btn,
+  .main {
+    width: 90%;
+  }
+}
