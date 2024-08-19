@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import Start from "./components/Start/Start.jsx";
 import Question from "./components/Question/Question.jsx";
+import { nanoid } from "nanoid";
+import { decode } from "html-entities";
 import "./App.css";
 
 export default function App() {
@@ -11,12 +13,15 @@ export default function App() {
     const getData = async () => {
       try {
         const res = await fetch("https://opentdb.com/api.php?amount=5");
-        const data = await res.json();
-        const formattedData = data.results.map((question) => ({
-          ...question,
+        const newData = await res.json();
+        const formattedNewData = newData.results.map((questionData) => ({
+          ...questionData,
+          question: decode(questionData.question),
+          correct_answer: decode(questionData.correct_answer),
+          incorrect_answer: decode(questionData.incorrect_answer),
           isChecked: false,
         }));
-        setData(formattedData);
+        setData(formattedNewData);
       } catch (e) {
         console.error(e);
       }
@@ -24,12 +29,15 @@ export default function App() {
     quizActive && getData();
   }, [quizActive]);
 
+  console.log(data);
+
   const togglequizActive = () => {
     setQuizActive((oldquizActive) => !oldquizActive);
   };
 
-  const questionElements = data.map((question, i) => {
-    return <Question key={i} {...question} />;
+  const questionComponents = data.map((question) => {
+    const id = nanoid();
+    return <Question key={id} id={id} {...question} />;
   });
 
   return (
@@ -37,7 +45,7 @@ export default function App() {
       <div className="blob blob--right"></div>
       <main className="main">
         <div className="container">
-          {data.length === 0 ? <Start /> : questionElements}
+          {data.length === 0 ? <Start /> : questionComponents}
           <button className="btn btn--primary" onClick={togglequizActive}>
             {!quizActive ? "Start Quiz" : "Check Answers"}
           </button>

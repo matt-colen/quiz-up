@@ -1,15 +1,17 @@
-import { useId } from "react";
 import "./Question.css";
 
-export default function Question(props) {
-  console.log("props", props);
-  const id = useId();
-
+export default function Question({
+  correct_answer,
+  incorrect_answers,
+  id,
+  question,
+  isChecked,
+}) {
   const handleClick = () => {
     console.log("clicked");
   };
 
-  const answers = [props.correct_answer, ...props.incorrect_answers]
+  const answers = [correct_answer, ...incorrect_answers];
 
   const inputElements = answers.map((answer) => {
     const inputId = `${id}-${answer}`;
@@ -23,7 +25,7 @@ export default function Question(props) {
           name={id}
           id={inputId}
           onChange={handleClick}
-          checked={props.isChecked}
+          checked={isChecked}
         />
       </div>
     );
@@ -32,7 +34,7 @@ export default function Question(props) {
   return (
     <div className="question-container">
       <fieldset className="question">
-        <legend className="question-txt">{props.question}</legend>
+        <legend className="question-txt">{question}</legend>
         <div className="answers">{inputElements}</div>
       </fieldset>
     </div>
