@@ -1,30 +1,28 @@
 import "./Question.css";
 
 export default function Question({
-  correct_answer,
-  incorrect_answers,
+  answers,
   id,
   question,
   isChecked,
+  handleAnswerClick,
 }) {
-  const handleClick = () => {
-    console.log("clicked");
-  };
-
-  const answers = [correct_answer, ...incorrect_answers];
-
   const inputElements = answers.map((answer) => {
-    const inputId = `${id}-${answer}`;
+    const inputId = `${id}-${answer.text}`;
     return (
       <div key={inputId}>
-        <label className="answer-btn" htmlFor={inputId}>
-          {answer}
+        <label
+          className="answer-btn"
+          style={{ background: answer.isChecked ? "#D6DBF5" : "" }}
+          htmlFor={inputId}
+        >
+          {answer.text}
         </label>
         <input
           type="radio"
-          name={id}
+          name={answer.id}
           id={inputId}
-          onChange={handleClick}
+          onChange={(e) => handleAnswerClick(e.target.id)}
           checked={isChecked}
         />
       </div>

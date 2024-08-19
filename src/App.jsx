@@ -6,52 +6,72 @@ import { decode } from "html-entities";
 import "./App.css";
 
 export default function App() {
-  const [quizActive, setQuizActive] = useState(false);
-  const [data, setData] = useState([]);
+  const [isQuizActive, setIsQuizActive] = useState(false);
+  const [quizData, setQuizData] = useState([]);
+
+  const formatData = (data) =>
+    data.results.map((questionData) => {
+      const correctAnswer = {
+        correct: true,
+        isChecked: false,
+        text: decode(questionData.correct_answer),
+      };
+      const incorrectAnswers = questionData.incorrect_answers.map((answer) => ({
+        correct: false,
+        isChecked: false,
+        text: decode(answer),
+      }));
+      return {
+        ...questionData,
+        question: decode(questionData.question),
+        answers: [correctAnswer, ...incorrectAnswers],
+        id: nanoid(),
+      };
+    });
 
   useEffect(() => {
     const getData = async () => {
       try {
         const res = await fetch("https://opentdb.com/api.php?amount=5");
-        const newData = await res.json();
-        const formattedNewData = newData.results.map((questionData) => ({
-          ...questionData,
-          question: decode(questionData.question),
-          correct_answer: decode(questionData.correct_answer),
-          incorrect_answer: decode(questionData.incorrect_answer),
-          isChecked: false,
-        }));
-        setData(formattedNewData);
+        const data = await res.json();
+        setQuizData(formatData(data));
       } catch (e) {
         console.error(e);
       }
     };
-    quizActive && getData();
-  }, [quizActive]);
+    isQuizActive && getData();
+  }, [isQuizActive]);
 
-  console.log(data);
-
-  const togglequizActive = () => {
-    setQuizActive((oldquizActive) => !oldquizActive);
+  const toggleIsQuizActive = () => {
+    setIsQuizActive((previsQuizActive) => !previsQuizActive);
   };
 
-  const questionComponents = data.map((question) => {
-    const id = nanoid();
-    return <Question key={id} id={id} {...question} />;
+  const handleAnswerClick = () => {
+    console.log("clicked");
+  };
+
+  const questionComponents = quizData.map((question) => {
+    return (
+      <Question
+        key={question.id}
+        {...question}
+        handleAnswerClick={handleAnswerClick}
+      />
+    );
   });
 
   return (
-    <>
+    <div className="app">
       <div className="blob blob--right"></div>
       <main className="main">
         <div className="container">
-          {data.length === 0 ? <Start /> : questionComponents}
-          <button className="btn btn--primary" onClick={togglequizActive}>
-            {!quizActive ? "Start Quiz" : "Check Answers"}
+          {quizData.length === 0 ? <Start /> : questionComponents}
+          <button className="btn btn--primary" onClick={toggleIsQuizActive}>
+            {!isQuizActive ? "Start Quiz" : "Check Answers"}
           </button>
         </div>
       </main>
       <div className="blob blob--left"></div>
-    </>
+    </div>
   );
 }

@@ -27,6 +27,11 @@
   font-size: 0.7rem;
   font-weight: 500;
   padding: 0.25em 1em;
+  cursor: pointer;
+}
+
+.answer-btn:hover {
+  background: var(--color-bg-btn-selected);
 }
 
 /* Hides radio btns while keeping them focusable and clickable */
