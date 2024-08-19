@@ -43,10 +43,11 @@ body {
   font-weight: 500;
   padding: 0.8em 1.8em;
   transition: 0.2s all;
+  justify-self: center;
 }
 
 .btn:hover {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .btn--primary {
