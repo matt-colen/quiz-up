@@ -86,6 +86,11 @@ body {
   left: 0;
 }
 
+.error {
+  color: red;
+  font-weight: bold;
+}
+
 @media (max-width: 700px) {
   .main {
     padding: 7vh 5%;

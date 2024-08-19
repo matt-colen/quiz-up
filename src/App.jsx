@@ -8,49 +8,61 @@ import "./App.css";
 export default function App() {
   const [isQuizActive, setIsQuizActive] = useState(false);
   const [quizData, setQuizData] = useState([]);
+  const [apiError, setApiError] = useState(false);
 
-  const formatData = (data) =>
-    data.results.map((questionData) => {
+  const formatData = (incomingQuizData) =>
+    incomingQuizData.results.map((question) => {
       const correctAnswer = {
         correct: true,
         isChecked: false,
-        text: decode(questionData.correct_answer),
+        text: decode(question.correct_answer),
       };
-      const incorrectAnswers = questionData.incorrect_answers.map((answer) => ({
+      const incorrectAnswers = question.incorrect_answers.map((answer) => ({
         correct: false,
         isChecked: false,
         text: decode(answer),
       }));
       return {
-        ...questionData,
-        question: decode(questionData.question),
+        ...question,
+        question: decode(question.question),
         answers: [correctAnswer, ...incorrectAnswers],
         id: nanoid(),
       };
     });
 
   useEffect(() => {
-    const getData = async () => {
+    const getNewData = async () => {
       try {
         const res = await fetch("https://opentdb.com/api.php?amount=5");
-        const data = await res.json();
-        setQuizData(formatData(data));
+        if (res.ok) {
+          const data = await res.json();
+          setApiError(false);
+          setQuizData(formatData(data));
+        } else {
+          throw Error("Network error");
+        }
       } catch (e) {
         console.error(e);
+        setApiError(true);
       }
     };
-    isQuizActive && getData();
+    isQuizActive && getNewData();
   }, [isQuizActive]);
 
+  // Keeps the quiz in an inactive state if the api data doesn't come through
+  useEffect(() => {
+    apiError && setIsQuizActive(false);
+  }, [apiError]);
+
   const toggleIsQuizActive = () => {
-    setIsQuizActive((previsQuizActive) => !previsQuizActive);
+    setIsQuizActive((prevIsQuizActive) => !prevIsQuizActive);
   };
 
   const handleAnswerClick = () => {
-    console.log("clicked");
+    console.log(quizData);
   };
 
-  const questionComponents = quizData.map((question) => {
+  const questionElements = quizData.map((question) => {
     return (
       <Question
         key={question.id}
@@ -65,10 +77,13 @@ export default function App() {
       <div className="blob blob--right"></div>
       <main className="main">
         <div className="container">
-          {quizData.length === 0 ? <Start /> : questionComponents}
+          {quizData.length === 0 ? <Start /> : questionElements}
           <button className="btn btn--primary" onClick={toggleIsQuizActive}>
             {!isQuizActive ? "Start Quiz" : "Check Answers"}
           </button>
+          {apiError && (
+            <p className="error">Something went wrong, please try again</p>
+          )}
         </div>
       </main>
       <div className="blob blob--left"></div>
