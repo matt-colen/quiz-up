@@ -1,0 +1,38 @@
+.question-container {
+  padding-bottom: 2em;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.question {
+  padding: 0;
+  border: none;
+}
+
+.question-txt {
+  font-weight: 700;
+}
+
+.answers {
+  margin-top: 1em;
+  display: flex;
+  flex-flow: wrap;
+  gap: 0.5em;
+}
+
+.answer-btn {
+  border-radius: 8px;
+  border: 0.8px solid var(--color-bg-btn);
+  color: var(--color-txt-primary);
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.25em 1em;
+}
+
+/* Hides radio btns while keeping them focusable and clickable */
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}

@@ -2,7 +2,9 @@
   --font-primary: "Karla", sans-serif;
   --color-light: #f5f7fb;
   --color-bg-btn: #4d5b9e;
+  --color-bg-btn-selected: #d6dbf5;
   --color-txt-primary: #293264;
+  --color-border-light: #dbdef0;
 }
 
 * {
@@ -15,12 +17,22 @@ button {
   font-family: var(--font-primary);
 }
 
-.main {
+body {
   background: var(--color-light);
+  color: var(--color-txt-primary);
+}
+
+.main {
   height: 100vh;
-  position: relative;
   display: grid;
   place-content: center;
+  padding: 7vh 15%;
+}
+
+.container {
+  text-align: center;
+  display: grid;
+  gap: 2em;
 }
 
 .btn {
@@ -47,6 +59,7 @@ button {
   background-repeat: no-repeat;
   height: 235px;
   width: 297px;
+  z-index: -1;
 }
 
 .blob--right {
