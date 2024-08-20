@@ -12,7 +12,7 @@ export default function Question({
     const inputId = `${id}-${answer.text}`;
 
     return (
-      <div key={inputId}>
+      <div className="answer" key={inputId}>
         <label
           className="answer-btn"
           style={

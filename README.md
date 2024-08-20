@@ -1,3 +1,3 @@
-# Quiz-App
+# Quiz-Up
 
-A quiz app built w/ React and Vite.
+## A quiz app built w/ React and the Open Trivia Database API.

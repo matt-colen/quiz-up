@@ -11,3 +11,7 @@
 .container > .btn {
   margin-top: 1.8em;
 }
+
+.fa-arrow-up {
+  opacity: 0.8;
+}
