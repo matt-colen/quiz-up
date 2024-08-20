@@ -6,6 +6,7 @@ export default function Question({
   question,
   isChecked,
   handleAnswerClick,
+  isQuizComplete,
 }) {
   const inputElements = answers.map((answer) => {
     const inputId = `${id}-${answer.text}`;
@@ -14,7 +15,18 @@ export default function Question({
       <div key={inputId}>
         <label
           className="answer-btn"
-          style={{ background: answer.isChecked ? "#D6DBF5" : "" }}
+          style={
+            isQuizComplete
+              ? {
+                  background: answer.correct
+                    ? "#94D7A2"
+                    : answer.isChecked
+                    ? "#F8BCBC"
+                    : "",
+                  opacity: answer.correct ? "1" : ".5",
+                }
+              : { background: answer.isChecked ? "#D6DBF5" : "" }
+          }
           htmlFor={inputId}
         >
           {answer.text}

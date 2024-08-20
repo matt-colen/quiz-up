@@ -86,6 +86,13 @@ body {
   left: 0;
 }
 
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
 .error {
   color: red;
   font-weight: bold;

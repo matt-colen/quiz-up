@@ -108,11 +108,10 @@ export default function App() {
         key={question.id}
         {...question}
         handleAnswerClick={handleAnswerClick}
+        isQuizComplete={isQuizComplete}
       />
     );
   });
-
-  console.log(score);
 
   return (
     <div className="app">
@@ -120,16 +119,19 @@ export default function App() {
       <main className="main">
         <div className="container">
           {quizData.length === 0 ? <Start /> : questionElements}
-          <button className="btn btn--primary" onClick={toggleIsQuizActive}>
-            {!isQuizActive && !isQuizComplete
-              ? "Start Quiz"
-              : isQuizComplete
-              ? "New Questions"
-              : "Check Answers"}
-          </button>
-          {apiError && (
-            <p className="error">Something went wrong, please try again</p>
-          )}
+          <div className="btn-container">
+            {isQuizComplete && <h3>You scored {score}/5 correct answers</h3>}
+            <button className="btn btn--primary" onClick={toggleIsQuizActive}>
+              {!isQuizActive && !isQuizComplete
+                ? "Start quiz"
+                : isQuizComplete
+                ? "Play again"
+                : "Check answers"}
+            </button>
+            {apiError && (
+              <p className="error">Something went wrong, please try again</p>
+            )}
+          </div>
         </div>
       </main>
       <div className="blob blob--left"></div>
