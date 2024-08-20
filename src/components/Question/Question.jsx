@@ -9,6 +9,7 @@ export default function Question({
 }) {
   const inputElements = answers.map((answer) => {
     const inputId = `${id}-${answer.text}`;
+
     return (
       <div key={inputId}>
         <label
@@ -20,9 +21,10 @@ export default function Question({
         </label>
         <input
           type="radio"
-          name={answer.id}
+          name={id}
           id={inputId}
-          onChange={(e) => handleAnswerClick(e.target.id)}
+          value={answer.text}
+          onChange={(e) => handleAnswerClick(e.target)}
           checked={isChecked}
         />
       </div>

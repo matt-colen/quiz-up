@@ -27,6 +27,7 @@ export default function App() {
         question: decode(question.question),
         answers: [correctAnswer, ...incorrectAnswers],
         id: nanoid(),
+        checked: "",
       };
     });
 
@@ -58,9 +59,32 @@ export default function App() {
     setIsQuizActive((prevIsQuizActive) => !prevIsQuizActive);
   };
 
-  const handleAnswerClick = () => {
-    console.log(quizData);
+  const handleAnswerClick = (target) => {
+    const targetIndex = quizData.findIndex((question) => {
+      return question.id === target.name;
+    });
+    const questionIndex = quizData[targetIndex].answers.findIndex((answer) => {
+      return answer.text === target.value;
+    });
+
+    setQuizData((prevData) => {
+      const newData = prevData.map((question, index) => {
+        return index === targetIndex
+          ? {
+              ...question,
+              answers: question.answers.map((answer, i) => {
+                return i === questionIndex
+                  ? { ...answer, isChecked: !answer.isChecked }
+                  : { ...answer, isChecked: false };
+              }),
+            }
+          : { ...question };
+      });
+      return newData;
+    });
   };
+
+  console.log(quizData);
 
   const questionElements = quizData.map((question) => {
     return (
