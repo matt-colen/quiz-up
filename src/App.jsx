@@ -12,6 +12,14 @@ export default function App() {
   const [apiError, setApiError] = useState(false);
   const [score, setScore] = useState(0);
 
+  const shuffle = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+  };
+
   const formatData = (incomingQuizData) =>
     incomingQuizData.results.map((question) => {
       const correctAnswer = {
@@ -24,10 +32,11 @@ export default function App() {
         isChecked: false,
         text: decode(answer),
       }));
+      const combinedAnswers = [correctAnswer, ...incorrectAnswers];
       return {
         ...question,
         question: decode(question.question),
-        answers: [correctAnswer, ...incorrectAnswers],
+        answers: shuffle(combinedAnswers),
         id: nanoid(),
         checked: "",
       };
