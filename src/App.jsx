@@ -7,8 +7,10 @@ import "./App.css";
 
 export default function App() {
   const [isQuizActive, setIsQuizActive] = useState(false);
+  const [isQuizComplete, setIsQuizComplete] = useState(false);
   const [quizData, setQuizData] = useState([]);
   const [apiError, setApiError] = useState(false);
+  const [score, setScore] = useState(0);
 
   const formatData = (incomingQuizData) =>
     incomingQuizData.results.map((question) => {
@@ -50,13 +52,29 @@ export default function App() {
     isQuizActive && getNewData();
   }, [isQuizActive]);
 
-  // Keeps the quiz in an inactive state if the api data doesn't come through
+  // Keeps the quiz in an inactive state if the api request fails
   useEffect(() => {
     apiError && setIsQuizActive(false);
   }, [apiError]);
 
+  // Updates the score when quiz is complete
+  useEffect(() => {
+    if (isQuizComplete) {
+      const correctAnswers = quizData.map((question) => {
+        return question.answers.filter(
+          (answer) => answer.isChecked && answer.correct
+        );
+      });
+      const currentScore = correctAnswers.filter(
+        (answer) => answer.length > 0
+      ).length;
+      setScore(currentScore);
+    }
+  }, [isQuizComplete]);
+
   const toggleIsQuizActive = () => {
     setIsQuizActive((prevIsQuizActive) => !prevIsQuizActive);
+    isQuizActive ? setIsQuizComplete(true) : setIsQuizComplete(false);
   };
 
   const handleAnswerClick = (target) => {
@@ -84,8 +102,6 @@ export default function App() {
     });
   };
 
-  console.log(quizData);
-
   const questionElements = quizData.map((question) => {
     return (
       <Question
@@ -96,6 +112,8 @@ export default function App() {
     );
   });
 
+  console.log(score);
+
   return (
     <div className="app">
       <div className="blob blob--right"></div>
@@ -103,7 +121,11 @@ export default function App() {
         <div className="container">
           {quizData.length === 0 ? <Start /> : questionElements}
           <button className="btn btn--primary" onClick={toggleIsQuizActive}>
-            {!isQuizActive ? "Start Quiz" : "Check Answers"}
+            {!isQuizActive && !isQuizComplete
+              ? "Start Quiz"
+              : isQuizComplete
+              ? "New Questions"
+              : "Check Answers"}
           </button>
           {apiError && (
             <p className="error">Something went wrong, please try again</p>
