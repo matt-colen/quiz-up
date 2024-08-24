@@ -12,14 +12,16 @@ export default function App() {
   const [apiError, setApiError] = useState(false);
   const [score, setScore] = useState(0);
 
+  // Shuffles array of potential answers
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+      [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
   };
 
+  // Formats incoming API data
   const formatData = (incomingQuizData) =>
     incomingQuizData.results.map((question) => {
       const correctAnswer = {
@@ -33,6 +35,7 @@ export default function App() {
         text: decode(answer),
       }));
       const combinedAnswers = [correctAnswer, ...incorrectAnswers];
+
       return {
         ...question,
         question: decode(question.question),
@@ -42,6 +45,7 @@ export default function App() {
       };
     });
 
+  // Fetches new API data
   useEffect(() => {
     const getNewData = async () => {
       try {
@@ -86,6 +90,7 @@ export default function App() {
     isQuizActive ? setIsQuizComplete(true) : setIsQuizComplete(false);
   };
 
+  // Updates data for each answer selection
   const handleAnswerClick = (target) => {
     const targetIndex = quizData.findIndex((question) => {
       return question.id === target.name;
@@ -111,6 +116,7 @@ export default function App() {
     });
   };
 
+  // Question elements to be rendered
   const questionElements = quizData.map((question) => {
     return (
       <Question
